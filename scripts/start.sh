@@ -130,6 +130,19 @@ if [ -n "${metrics_agent_jar}" ]; then
   OPTS+=" -J$metrics_agent_jar"
 fi
 
+# Read offline processing from this path. The first directory path should include
+# tsv files with the following fields:
+# job_id,apptype,username,jobname,queuename,startTime,finishTime
+#
+# The other path which is a HDFS path should contain done/ and tmp/ directory
+# with the exact structure that mr-history directory has full of JHist and Config
+# files.
+if [ -n "${appslist_path}" ]; then
+  OPTS+=" -Dappslist.path=$appslist_path"
+fi
+if [ -n "${history_hdfs_path}" ]; then
+  OPTS+=" -Dhistory.hdfs.path=$history_hdfs_path"
+fi
 
 # Navigate to project root
 cd $project_root
